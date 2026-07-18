@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "source": "Как дела?",
+    "answers": [
+      "How are you?",
+      "How are you doing?"
+    ]
+  },
+  {
+    "id": 2,
+    "source": "Я люблю кофе.",
+    "answers": [
+      "I like coffee."
+    ]
+  },
+  {
+    "id": 3,
+    "source": "Увидимся завтра.",
+    "answers": [
+      "See you tomorrow."
+    ]
+  }
+]
