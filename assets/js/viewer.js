@@ -1,100 +1,142 @@
-let currentIndex = 0;
-let translationVisible = false;
+export function showViewer(app, phrases, goHome) {
 
-export function showViewer(container, phrases) {
+    let currentIndex = 0;
+    let translationVisible = false;
 
-    currentIndex = 0;
-    translationVisible = false;
+    render();
 
-    render(container, phrases);
+    function render() {
 
-}
+        const phrase = phrases[currentIndex];
 
-function render(container, phrases) {
+        app.innerHTML = `
 
-    const phrase = phrases[currentIndex];
+            <section class="page viewer">
 
-    container.innerHTML = `
-        <h2>Просмотр фраз</h2>
+                <button
+                    class="btn btn--secondary"
+                    id="back-button">
 
-        <div class="viewer-navigation">
+                    ← Back
 
-            <button id="prevBtn">⬅</button>
+                </button>
 
-            <span>${currentIndex + 1} / ${phrases.length}</span>
+                <div class="badge">
 
-            <button id="nextBtn">➡</button>
+                    ${currentIndex + 1} / ${phrases.length}
 
-        </div>
+                </div>
 
-        <div class="card">
+                <article class="card phrase-card">
 
-            <h3>${phrase.source}</h3>
+                    <div class="phrase">
 
-            <hr>
+                        ${phrase.source}
 
-            <div id="translationCard" class="translation-card">
+                    </div>
 
-                ${
-        translationVisible
-            ? phrase.answers.join("<br>")
-            : `
-                            <div class="hidden-text">
-                                👁<br>
-                                Нажмите, чтобы показать перевод
-                            </div>
-                        `
+                    <div class="translation ${translationVisible ? "show" : ""}">
+
+                        ${translationVisible ? phrase.answers[0] : ""}
+
+                    </div>
+
+                </article>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn--secondary"
+                        id="prev-button">
+
+                        ← Previous
+
+                    </button>
+
+                    <button
+                        class="btn btn--primary"
+                        id="show-button">
+
+                        ${
+            translationVisible
+                ? "Hide translation"
+                : "Show translation"
+        }
+
+                    </button>
+
+                    <button
+                        class="btn btn--secondary"
+                        id="next-button">
+
+                        Next →
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        `;
+
+        bindEvents();
+
     }
 
-            </div>
+    function bindEvents() {
 
-        </div>
-    `;
+        document
+            .querySelector("#back-button")
+            .addEventListener("click", goHome);
 
-    bindEvents(container, phrases);
+        document
+            .querySelector("#show-button")
+            .addEventListener("click", toggleTranslation);
 
-}
+        document
+            .querySelector("#prev-button")
+            .addEventListener("click", previousPhrase);
 
-function bindEvents(container, phrases) {
+        document
+            .querySelector("#next-button")
+            .addEventListener("click", nextPhrase);
 
-    document.getElementById("prevBtn")
-        .addEventListener("click", () => {
+    }
 
-            currentIndex--;
+    function toggleTranslation() {
 
-            if (currentIndex < 0) {
-                currentIndex = phrases.length - 1;
-            }
+        translationVisible = !translationVisible;
 
-            translationVisible = false;
+        render();
 
-            render(container, phrases);
+    }
 
-        });
+    function previousPhrase() {
 
-    document.getElementById("nextBtn")
-        .addEventListener("click", () => {
+        currentIndex--;
 
-            currentIndex++;
+        if (currentIndex < 0) {
+            currentIndex = phrases.length - 1;
+        }
 
-            if (currentIndex >= phrases.length) {
-                currentIndex = 0;
-            }
+        translationVisible = false;
 
-            translationVisible = false;
+        render();
 
-            render(container, phrases);
+    }
 
-        });
+    function nextPhrase() {
 
-    document
-        .getElementById("translationCard")
-        .addEventListener("click", () => {
+        currentIndex++;
 
-            translationVisible = !translationVisible;
+        if (currentIndex >= phrases.length) {
+            currentIndex = 0;
+        }
 
-            render(container, phrases);
+        translationVisible = false;
 
-        });
+        render();
+
+    }
 
 }

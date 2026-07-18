@@ -1,10 +1,10 @@
-export function checkTranslation(userAnswer, answers) {
+export function checkAnswer(userAnswer, answers) {
 
-    const normalizedAnswer = normalize(userAnswer);
+    const normalizedUser = normalize(userAnswer);
 
-    return answers.some(answer => {
-        return normalize(answer) === normalizedAnswer;
-    });
+    return answers.some(answer =>
+        normalize(answer) === normalizedUser
+    );
 
 }
 
@@ -13,8 +13,6 @@ function normalize(text) {
     return text
         .trim()
         .toLowerCase()
-        .replace(/ё/g, "е")
-        .replace(/[.,!?;:()"']/g, "")
         .replace(/\s+/g, " ");
 
 }

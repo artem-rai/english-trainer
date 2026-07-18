@@ -1,151 +1,274 @@
-import { checkTranslation } from "./checker.js";
+import { checkAnswer } from "./checker.js";
 
-let currentIndex = 0;
-let answered = false;
+const TRAINING_SIZE = 10;
 
-export function showTraining(container, phrases) {
+export function startTraining(app, phrases, goHome) {
 
-    currentIndex = 0;
-    answered = false;
+    const trainingPhrases = getRandomPhrases(phrases, TRAINING_SIZE);
 
-    render(container, phrases);
+    let currentIndex = 0;
+    let score = 0;
 
-}
+    renderQuestion();
 
-function render(container, phrases) {
+    function renderQuestion() {
 
-    const phrase = phrases[currentIndex];
+        const phrase = trainingPhrases[currentIndex];
 
-    container.innerHTML = `
-        <h2>Тест</h2>
+        app.innerHTML = `
 
-        <p><strong>Фраза ${currentIndex + 1} из ${phrases.length}</strong></p>
+            <section class="page training">
 
-        <div class="card">
+                <button
+                    class="btn btn--secondary"
+                    id="back-button">
 
-            <h3>${phrase.source}</h3>
+                    ← Back
 
-            <input
-                id="answerInput"
-                type="text"
-                placeholder="Введите перевод"
-                autocomplete="off"
-            >
+                </button>
 
-            <button id="checkBtn">
-                Проверить
-            </button>
+                <div class="progress">
 
-            <div id="result"></div>
+                    ${createProgress()}
 
-        </div>
-    `;
+                </div>
 
-    const elements = {
+                <article class="card">
 
-        input: document.getElementById("answerInput"),
-        button: document.getElementById("checkBtn"),
-        result: document.getElementById("result")
+                    <h2 class="title">
+                        Translate
+                    </h2>
 
-    };
+                    <div class="training__question">
 
-    bindEvents(container, phrases, elements);
+                        ${phrase.source}
 
-}
+                    </div>
 
-function bindEvents(container, phrases, elements) {
+                    <input
+                        id="answer-input"
+                        class="input training__answer"
+                        type="text"
+                        placeholder="Enter translation..."
+                        autocomplete="off">
 
-    elements.input.focus();
+                    <div class="actions">
 
-    elements.button.addEventListener("click", () => {
+                        <button
+                            class="btn btn--primary"
+                            id="check-button">
 
-        handleAction(container, phrases, elements);
+                            Check
 
-    });
+                        </button>
 
-    elements.input.addEventListener("keydown", (event) => {
+                    </div>
 
-        if (event.key === "Enter") {
+                    <div
+                        id="feedback"
+                        class="mt-2"></div>
 
-            handleAction(container, phrases, elements);
+                </article>
+
+            </section>
+
+        `;
+
+        bindEvents();
+
+        document.querySelector("#answer-input").focus();
+
+    }
+
+    function bindEvents() {
+
+        document
+            .querySelector("#back-button")
+            .addEventListener("click", goHome);
+
+        document
+            .querySelector("#check-button")
+            .addEventListener("click", checkCurrentAnswer);
+
+        document
+            .querySelector("#answer-input")
+            .addEventListener("keydown", event => {
+
+                if (event.key === "Enter") {
+                    checkCurrentAnswer();
+                }
+
+            });
+
+    }
+
+    function checkCurrentAnswer() {
+
+        const phrase = trainingPhrases[currentIndex];
+
+        const input = document.querySelector("#answer-input");
+        const feedback = document.querySelector("#feedback");
+
+        const answer = input.value.trim();
+
+        if (!answer) {
+            input.focus();
+            return;
+        }
+
+        const correct = checkAnswer(
+            answer,
+            phrase.answers
+        );
+
+        if (correct) {
+
+            score++;
+
+            feedback.innerHTML = `
+                <div class="alert alert--success">
+                    ✅ Correct!
+                </div>
+            `;
+
+        } else {
+
+            feedback.innerHTML = `
+                <div class="alert alert--error">
+                    ❌ Correct answer:
+                    <strong>${phrase.answers.join(" / ")}</strong>
+                </div>
+            `;
 
         }
 
-    });
+        input.disabled = true;
 
-}
+        document
+            .querySelector("#check-button")
+            .disabled = true;
 
-function handleAction(container, phrases, elements) {
+        setTimeout(nextQuestion, 1200);
 
-    if (answered) {
+    }
 
-        nextQuestion(container, phrases);
+    function nextQuestion() {
 
-    } else {
+        currentIndex++;
 
-        checkAnswer(phrases, elements);
+        if (currentIndex >= trainingPhrases.length) {
+
+            renderResult();
+
+            return;
+
+        }
+
+        renderQuestion();
+
+    }
+
+    function renderResult() {
+
+        const percent = Math.round(
+            score / trainingPhrases.length * 100
+        );
+
+        app.innerHTML = `
+
+            <section class="page result">
+
+                <div class="result__emoji">
+
+                    🎉
+
+                </div>
+
+                <h2>
+
+                    Training completed
+
+                </h2>
+
+                <div class="result__score">
+
+                    ${score} / ${trainingPhrases.length}
+
+                </div>
+
+                <p class="result__text">
+
+                    ${percent}% correct
+
+                </p>
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn--primary"
+                        id="restart-button">
+
+                        Train again
+
+                    </button>
+
+                    <button
+                        class="btn btn--secondary"
+                        id="home-button">
+
+                        Home
+
+                    </button>
+
+                </div>
+
+            </section>
+
+        `;
+
+        document
+            .querySelector("#restart-button")
+            .addEventListener("click", () =>
+                startTraining(app, phrases, goHome)
+            );
+
+        document
+            .querySelector("#home-button")
+            .addEventListener("click", goHome);
+
+    }
+
+    function createProgress() {
+
+        return trainingPhrases
+            .map((_, index) => {
+
+                const active =
+                    index <= currentIndex
+                        ? "active"
+                        : "";
+
+                return `
+                    <div class="progress__item ${active}">
+                    </div>
+                `;
+
+            })
+            .join("");
 
     }
 
 }
 
-function checkAnswer(phrases, elements) {
+function getRandomPhrases(phrases, count) {
 
-    const phrase = phrases[currentIndex];
+    const shuffled = [...phrases]
+        .sort(() => Math.random() - 0.5);
 
-    const isCorrect = checkTranslation(
-
-        elements.input.value,
-        phrase.answers
-
+    return shuffled.slice(
+        0,
+        Math.min(count, phrases.length)
     );
 
-    answered = true;
-
-    elements.input.disabled = true;
-
-    if (isCorrect) {
-
-        elements.result.innerHTML = `
-            <p class="correct">
-                ✅ Верно!
-            </p>
-        `;
-
-    } else {
-
-        elements.result.innerHTML = `
-            <p class="wrong">
-                ❌ Неверно
-            </p>
-
-            <p>
-                Правильные ответы:
-                <br>
-                ${phrase.answers.join("<br>")}
-            </p>
-        `;
-
-    }
-
-    elements.button.textContent = "Следующая";
-
 }
-
-function nextQuestion(container, phrases) {
-
-    currentIndex++;
-
-    answered = false;
-
-    if (currentIndex >= phrases.length) {
-
-        currentIndex = 0;
-
-    }
-
-    render(container, phrases);
-
-}
-
    

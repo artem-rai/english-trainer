@@ -1,38 +1,111 @@
 import { loadPhrases } from "./dataLoader.js";
-import { showTraining } from "./training.js";
 import { showViewer } from "./viewer.js";
+import { startTraining } from "./training.js";
 
-const app = document.getElementById("app");
-const menu = document.getElementById("menu");
-
-const viewerBtn = document.getElementById("viewerBtn");
-const trainingBtn = document.getElementById("trainingBtn");
+const app = document.querySelector("#app");
 
 let phrases = [];
 
-function showMenu() {
-
-    menu.style.display = "block";
-    app.innerHTML = "";
-
-}
-
 async function init() {
 
-    phrases = await loadPhrases();
+    try {
+
+        phrases = await loadPhrases();
+
+        showHome();
+
+    } catch (error) {
+
+        console.error(error);
+
+        app.innerHTML = `
+            <section class="card">
+
+                <h2 class="title">
+                    Loading error
+                </h2>
+
+                <p class="subtitle">
+                    Unable to load phrases.
+                </p>
+
+            </section>
+        `;
+
+    }
 
 }
 
-viewerBtn.addEventListener("click", () => {
+function showHome() {
 
-    showViewer(app, phrases);
+    app.innerHTML = `
 
-});
+        <section class="page">
 
-trainingBtn.addEventListener("click", () => {
+            <header class="home__header">
 
-    showTraining(app, phrases);
+                <h1 class="title">
+                    English Trainer
+                </h1>
 
-});
+                <p class="subtitle">
+                    Learn English phrases every day.
+                </p>
+
+            </header>
+
+            <article
+                class="card card--interactive card--menu home__card"
+                id="viewer-card">
+
+                <h2>
+                    📖 Browse phrases
+                </h2>
+
+                <p>
+                    View all available phrases and translations.
+                </p>
+
+            </article>
+
+            <article
+                class="card card--interactive card--menu home__card"
+                id="training-card">
+
+                <h2>
+                    🎯 Training
+                </h2>
+
+                <p>
+                    Practice translations and test yourself.
+                </p>
+
+            </article>
+
+        </section>
+
+    `;
+
+    document
+        .querySelector("#viewer-card")
+        .addEventListener("click", openViewer);
+
+    document
+        .querySelector("#training-card")
+        .addEventListener("click", openTraining);
+
+}
+
+function openViewer() {
+
+    showViewer(app, phrases, showHome);
+
+}
+
+function openTraining() {
+
+    startTraining(app, phrases, showHome);
+
+}
 
 init();
