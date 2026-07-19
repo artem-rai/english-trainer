@@ -38,7 +38,7 @@
         {
           "id": 1,
           "source": "Не могли бы вы порекомендовать хороший местный ресторан поблизости?",
-          "answer": [
+          "answers": [
             "Could you please recommend a good local restaurant around here?",
             "Could u please recommend a good local restaurant around here?"
           ]
@@ -53,9 +53,9 @@
         {
           "id": 1,
           "source": "Я просто выдохся / совсем без сил после этого похода (дословно: «я полностью выжат»)",
-          "answer": [
-            "I'm totally wiped out after that hike",
-            "I am totally wiped out after that hike"
+          "answers": [
+            "I am totally wiped out after that hike",
+            "I'm totally wiped out after that hike"
           ]
         }
       ]
