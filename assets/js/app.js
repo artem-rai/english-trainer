@@ -1,16 +1,16 @@
-import { loadPhrases } from "./dataLoader.js";
+import { getCategories } from "./dataLoader.js";
 import { showViewer } from "./viewer.js";
 import { startTraining } from "./training.js";
 
 const app = document.querySelector("#app");
 
-let phrases = [];
+let categories = [];
 
 async function init() {
 
     try {
 
-        phrases = await loadPhrases();
+        categories = await getCategories();
 
         showHome();
 
@@ -98,13 +98,13 @@ function showHome() {
 
 function openViewer() {
 
-    showViewer(app, phrases, showHome);
+    showViewer(app, categories, showHome);
 
 }
 
 function openTraining() {
 
-    startTraining(app, phrases, showHome);
+    startTraining(app, categories, showHome);
 
 }
 

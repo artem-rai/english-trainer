@@ -1,24 +1,64 @@
-[
-  {
-    "id": 1,
-    "source": "Как дела?",
-    "answers": [
-      "How are you?",
-      "How are you doing?"
-    ]
-  },
-  {
-    "id": 2,
-    "source": "Я люблю кофе.",
-    "answers": [
-      "I like coffee"
-    ]
-  },
-  {
-    "id": 3,
-    "source": "Увидимся завтра.",
-    "answers": [
-      "See you tomorrow"
-    ]
-  }
-]
+{
+  "categories": [
+    {
+      "id": "it",
+      "title": "IT",
+      "icon": "💻",
+      "phrases": [
+        {
+          "id": 1,
+          "source": "Запушь изменения в Git",
+          "answers": [
+            "Push the changes to Git",
+            "Push the changes to Git"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "daily",
+      "title": "Повседневная жизнь",
+      "icon": "🏠",
+      "phrases": [
+        {
+          "id": 1,
+          "source": "Я люблю кофе",
+          "answers": [
+            "I like coffee",
+            "I love coffee"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "title": "Туризм",
+      "icon": "✈️",
+      "phrases": [
+        {
+          "id": 1,
+          "source": "Не могли бы вы порекомендовать хороший местный ресторан поблизости?",
+          "answer": [
+            "Could you please recommend a good local restaurant around here?",
+            "Could u please recommend a good local restaurant around here?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "slang",
+      "title": "Сленг",
+      "icon": "😎",
+      "phrases": [
+        {
+          "id": 1,
+          "source": "Я просто выдохся / совсем без сил после этого похода (дословно: «я полностью выжат»)",
+          "answer": [
+            "I'm totally wiped out after that hike",
+            "I am totally wiped out after that hike"
+          ]
+        }
+      ]
+    }
+  ]
+}

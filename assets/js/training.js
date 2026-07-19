@@ -1,15 +1,107 @@
 import { checkAnswer } from "./checker.js";
+import { showCategoryMenu } from "./categoryMenu.js";
 
 const TRAINING_SIZE = 10;
 
-export function startTraining(app, phrases, goHome) {
+export function startTraining(app, categories, goHome) {
 
-    const trainingPhrases = getRandomPhrases(phrases, TRAINING_SIZE);
+    let phrases = [];
+    let trainingPhrases = [];
+    let currentCategory = null;
 
     let currentIndex = 0;
     let score = 0;
 
-    renderQuestion();
+    renderCategories();
+
+    function renderCategories() {
+
+        showCategoryMenu({
+
+            app,
+
+            title: "Training",
+
+            subtitle: "Choose a category",
+
+            categories,
+
+            onBack: goHome,
+
+            onSelect: selectCategory
+
+        });
+
+    }
+
+    function selectCategory(categoryId) {
+
+        currentCategory = categories.find(
+            category => category.id === categoryId
+        );
+
+        if (!currentCategory) {
+            return;
+        }
+
+        phrases = currentCategory.phrases;
+
+        if (phrases.length === 0) {
+            renderEmptyCategory();
+            return;
+        }
+
+        trainingPhrases = getRandomPhrases(
+            phrases,
+            TRAINING_SIZE
+        );
+
+        currentIndex = 0;
+        score = 0;
+
+        renderQuestion();
+
+    }
+
+    function renderEmptyCategory() {
+
+        app.innerHTML = `
+
+            <section class="page">
+
+                <button
+                    class="btn btn--secondary"
+                    id="back-button">
+
+                    ← Back
+
+                </button>
+
+                <header class="home__header">
+
+                    <h1 class="title">
+
+                        ${currentCategory.icon} ${currentCategory.title}
+
+                    </h1>
+
+                    <p class="subtitle">
+
+                        No phrases in this category yet.
+
+                    </p>
+
+                </header>
+
+            </section>
+
+        `;
+
+        document
+            .querySelector("#back-button")
+            .addEventListener("click", renderCategories);
+
+    }
 
     function renderQuestion() {
 
@@ -76,7 +168,9 @@ export function startTraining(app, phrases, goHome) {
 
         bindEvents();
 
-        document.querySelector("#answer-input").focus();
+        document
+            .querySelector("#answer-input")
+            .focus();
 
     }
 
@@ -84,7 +178,7 @@ export function startTraining(app, phrases, goHome) {
 
         document
             .querySelector("#back-button")
-            .addEventListener("click", goHome);
+            .addEventListener("click", renderCategories);
 
         document
             .querySelector("#check-button")
@@ -214,6 +308,14 @@ export function startTraining(app, phrases, goHome) {
 
                     <button
                         class="btn btn--secondary"
+                        id="categories-button">
+
+                        Categories
+
+                    </button>
+
+                    <button
+                        class="btn btn--secondary"
                         id="home-button">
 
                         Home
@@ -228,9 +330,13 @@ export function startTraining(app, phrases, goHome) {
 
         document
             .querySelector("#restart-button")
-            .addEventListener("click", () =>
-                startTraining(app, phrases, goHome)
-            );
+            .addEventListener("click", () => {
+                selectCategory(currentCategory.id);
+            });
+
+        document
+            .querySelector("#categories-button")
+            .addEventListener("click", renderCategories);
 
         document
             .querySelector("#home-button")
