@@ -59,6 +59,28 @@ ol {
     list-style: none;
 }
 
+.app-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+}
+
+.app-logo {
+    width: 56px;
+    height: 56px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 2rem;
+
+    border-radius: 16px;
+
+    /*background: var(--color-surface);*/
+    box-shadow: var(--shadow-md);
+}
+
 /* ==========================================================
    VARIABLES
 ========================================================== */

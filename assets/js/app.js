@@ -59,7 +59,7 @@ function showHome() {
                 id="viewer-card">
 
                 <h2>
-                    📖 Browse phrases
+                    Browse phrases
                 </h2>
 
                 <p>
@@ -73,7 +73,7 @@ function showHome() {
                 id="training-card">
 
                 <h2>
-                    🎯 Training
+                    Training
                 </h2>
 
                 <p>

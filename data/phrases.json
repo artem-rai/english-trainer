@@ -3,7 +3,7 @@
     {
       "id": "it",
       "title": "IT",
-      "icon": "💻",
+      "icon": "",
       "phrases": [
         {
           "id": 1,
@@ -17,8 +17,8 @@
     },
     {
       "id": "daily",
-      "title": "Повседневная жизнь",
-      "icon": "🏠",
+      "title": "Простые фразы",
+      "icon": "",
       "phrases": [
         {
           "id": 1,
@@ -33,29 +33,30 @@
     {
       "id": "travel",
       "title": "Туризм",
-      "icon": "✈️",
+      "icon": "",
       "phrases": [
         {
           "id": 1,
-          "source": "Не могли бы вы порекомендовать хороший местный ресторан поблизости?",
+          "source": "Не могли бы вы порекомендовать хороший местный ресторан?",
           "answers": [
-            "Could you please recommend a good local restaurant around here?",
-            "Could u please recommend a good local restaurant around here?"
+            "Would you please recommend a good local restaurant?",
+            "Would u please recommend a good local restaurant?"
           ]
         }
       ]
     },
     {
-      "id": "slang",
-      "title": "Сленг",
-      "icon": "😎",
+      "id": "music",
+      "title": "Музыка",
+      "icon": "",
       "phrases": [
         {
           "id": 1,
-          "source": "Я просто выдохся / совсем без сил после этого похода (дословно: «я полностью выжат»)",
+          "source": "Я просто типично каждый день обычный ублюдок",
           "answers": [
-            "I am totally wiped out after that hike",
-            "I'm totally wiped out after that hike"
+            "I'm just a regular everyday normal motherfucker",
+            "I am just a regular everyday normal motherfucker"
+
           ]
         }
       ]
